@@ -1,0 +1,25 @@
+{
+  "compilerOptions": {
+    "target": "ES2020", // Transpila para uma versão moderna do JavaScript (ES2021)
+    "module": "commonjs", // Define o sistema de módulos como CommonJS (Node.js)
+    "moduleResolution": "node", // Resolução de módulos no estilo Node.js
+    "lib": ["ES2020"], // Inclui as definições de tipo para ES2020
+    "rootDir": "src", // Diretório raiz do código-fonte
+    "outDir": "dist", // Diretório de saída para os arquivos transpilados
+    "resolveJsonModule": true, // Permite importar arquivos JSON como módulos
+    "esModuleInterop": true, // Habilita a interoperabilidade entre módulos ES e CommonJS
+    "allowSyntheticDefaultImports": true, // Permite importações padrão sintéticas
+    "strict": true, // Habilita todas as verificações de tipo estritas
+    "skipLibCheck": true, // Ignora verificações de tipo em arquivos de definição de biblioteca
+    "forceConsistentCasingInFileNames": true, // Força o uso consistente de maiúsculas e minúsculas nos nomes de arquivos
+    "noFallthroughCasesInSwitch": true, // Gera erro para casos de queda em switch
+    "noImplicitOverride": true, // Gera erro para métodos que não substituem corretamente os métodos da classe pai
+  },
+  "include": [
+    "src"
+  ], // Diretório que contém o código-fonte
+  "exclude": [
+    "node_modules", // Diretório de dependências do Node.js
+    "dist" // Exclui arquivos de teste (opcional)
+  ]
+}
