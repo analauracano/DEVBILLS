@@ -1,25 +1,27 @@
 import type { FastifyInstance } from 'fastify';
 import createTransaction from '../controllers/transactions/createTransaction.controller';
+import { zodToJsonSchema } from 'zod-to-json-schema';
+import { createTransactionSchema, getTransactionsSchema } from '../schemas/transaction.schema';
+import { getTransactions } from '../controllers/transactions/getTransactions.controller';
 
 const transactionRoutes = async (fastify: FastifyInstance) => {
   fastify.route({
     method: 'POST',
     url: '/',
     schema: {
-        body: {
-            type: 'object',
-            required: ['description', 'amount', 'date', 'categoryId', 'type'],
-            properties: {
-                description: { type: 'string' },
-                amount: { type: 'number' },
-                date: { type: 'string', format: 'date-time' },
-                categoryId: { type: 'string' },
-                type: { type: 'string', enum: ['income', 'expense'] },
-            },
-        },
+        body:  zodToJsonSchema(createTransactionSchema),
     },
     handler: createTransaction,
   });
+
+  fastify.route({
+    method: 'GET',
+    url: '/',
+    schema: {
+        querystring: zodToJsonSchema(getTransactionsSchema),
+    },
+    handler: getTransactions
+  })
 };
 
 export default transactionRoutes;

@@ -5,6 +5,7 @@ const createTransaction = async (request: FastifyRequest, reply: FastifyReply): 
 
   if (!userId) {
     reply.status(401).send({ error: 'Usuário não autenticado' });
+    return;
   }
 };
 
