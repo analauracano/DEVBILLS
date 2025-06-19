@@ -5,7 +5,7 @@ dotenv.config();
 
 const envSchema = z.object({
     PORT: z.string().transform(Number).default("3001"),
-    DATABASE_URL: z.string().min(5, "URL do banco de dados obrigatória"),
+    DATABASE_URL: z.string().min(5, "DATABASE_URL é obrigatória"),
     NODE_ENV: z.enum(["dev", "prod", "test"], {
         message: "node ENV deve ser dev, prod ou test",
 }),

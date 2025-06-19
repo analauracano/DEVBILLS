@@ -3,7 +3,6 @@ import { prismaConnect } from './config/prisma';
 import { initializeGlobalCategories } from './services/globalCategories.service';
 import { env } from './config/env';
 
-
 const PORT = env.PORT
 
 const starServer = async () => {
