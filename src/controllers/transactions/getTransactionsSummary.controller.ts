@@ -5,8 +5,7 @@ import utc from 'dayjs/plugin/utc';
 import prisma from '../../config/prisma';
 import type { CategorySummary } from '../../types/category.types';
 import { TransactionType } from '@prisma/client';
-import { checkPrime } from 'crypto';
-import { TransactionsSummary } from '../../types/transaction.type';
+import type { TransactionsSummary } from '../../types/transaction.type';
 dayjs.extend(utc);
 
 export const getTransactionsSummary = async (
