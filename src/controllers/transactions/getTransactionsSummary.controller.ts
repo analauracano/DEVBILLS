@@ -3,6 +3,10 @@ import type { getTransactionsSummarySchemaQuery } from '../../schemas/transactio
 import dayjs from 'dayjs';
 import utc from 'dayjs/plugin/utc';
 import prisma from '../../config/prisma';
+import type { CategorySummary } from '../../types/category.types';
+import { TransactionType } from '@prisma/client';
+import { checkPrime } from 'crypto';
+import { TransactionsSummary } from '../../types/transaction.type';
 dayjs.extend(utc);
 
 export const getTransactionsSummary = async (
@@ -40,9 +44,44 @@ export const getTransactionsSummary = async (
         },
   });
 
-  console.log(transactions)
+  let totalExpenses = 0;
+  let totalIncomes = 0;
+  const groupedExpenses = new Map<string, CategorySummary>();
 
-  reply.send(transactions);
+  for(const transaction of transactions){
+    if (transaction.type === TransactionType.expense){
+
+      const categoryId = transaction.categoryId ?? '';
+      const existing = groupedExpenses.get(categoryId) ?? {
+        categoryId: categoryId,
+        categoryName: transaction.Category?.name ?? '',
+        categoryColor: transaction.Category?.color ?? '',
+        amount: 0,
+        percentage: 0,
+      }
+      existing.amount += transaction.amount;
+
+      groupedExpenses.set(categoryId, existing);
+
+      totalExpenses += transaction.amount
+
+    } else {
+      totalIncomes += transaction.amount
+    }
+  } 
+
+  console.log(Array.from(groupedExpenses.values()));
+
+const summary: TransactionsSummary ={
+  totalExpenses,
+  totalIncomes,
+  balance: totalIncomes - totalExpenses,
+  expensesByCategory: Array.from(groupedExpenses.values()).map((entry) => ({
+    ...entry,
+    percentage: Number.parseFloat(((entry.amount / totalExpenses) * 100).toFixed(2))
+  })).sort((a, b) => b.amount - a.amount)
+}
+  reply.send(summary);
 } catch (err) {
     request.log.error('Erro ao buscar transações', err);
     reply.status(500).send({ error: 'Erro do servidor' });
